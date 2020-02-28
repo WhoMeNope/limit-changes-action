@@ -22,8 +22,6 @@ async function run(): Promise<void> {
       return
     }
 
-    const check = checkrun(octokit.checks, 'Changes', pr)
-
     const {data: pullRequest} = await octokit.pulls.get({
       owner: pr.owner,
       repo: pr.repo,
@@ -31,6 +29,12 @@ async function run(): Promise<void> {
     })
 
     const changes = pullRequest.additions + pullRequest.deletions
+
+    const check = checkrun(octokit.checks, 'Changes', {
+      owner: pr.owner,
+      repo: pr.repo,
+      head_sha: pullRequest.head.sha
+    })
 
     if (changes > errorLimit) {
       await check.error()
@@ -58,7 +62,7 @@ function getPullRequestInfo(): types.PullRequestInfo | undefined {
     owner,
     repo,
     number,
-    head_sha: sha,
+    sha,
     ref
   }
 }

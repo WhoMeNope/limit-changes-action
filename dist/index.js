@@ -3529,13 +3529,17 @@ function run() {
                 core.setFailed('Could not get pull request info.');
                 return;
             }
-            const check = checkrun_1.default(octokit.checks, 'Changes', pr);
             const { data: pullRequest } = yield octokit.pulls.get({
                 owner: pr.owner,
                 repo: pr.repo,
                 pull_number: pr.number
             });
             const changes = pullRequest.additions + pullRequest.deletions;
+            const check = checkrun_1.default(octokit.checks, 'Changes', {
+                owner: pr.owner,
+                repo: pr.repo,
+                head_sha: pullRequest.head.sha
+            });
             if (changes > errorLimit) {
                 yield check.error();
             }
@@ -3562,7 +3566,7 @@ function getPullRequestInfo() {
         owner,
         repo,
         number,
-        head_sha: sha,
+        sha,
         ref
     };
 }
@@ -8366,10 +8370,11 @@ function checkrun(checks, name, statusInfo) {
                     title: "So many changes deserve multiple PR's",
                     summary: `
         Did you know?
-        Making huge pull requests slows down project in multiple ways.
+        Making big pull requests slows down projects in multiple ways.
+
         1. Blocks others from working on these parts of the codebase
         2. Increases friction in the team, since more coordination is necessary
-        3. Lowers teams agility and makes it more difficult to tackle incoming challenges
+        3. Lowers team agility and makes it more difficult to tackle incoming challenges
 
         These, and many more, are reasons why you should keep your PR's smol!
         `,

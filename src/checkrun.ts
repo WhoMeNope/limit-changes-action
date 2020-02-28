@@ -19,10 +19,16 @@ export interface Checkrun {
   success(): Promise<void>
 }
 
+export interface CheckrunInfo {
+  owner: string,
+  repo: string
+  head_sha: string
+}
+
 function checkrun(
   checks: Checks,
   name: string,
-  statusInfo: types.PullRequestInfo
+  statusInfo: CheckrunInfo
 ): Checkrun {
   const started_at = new Date().toJSON()
 
@@ -39,10 +45,11 @@ function checkrun(
         title: "So many changes deserve multiple PR's",
         summary: `
         Did you know?
-        Making huge pull requests slows down project in multiple ways.
+        Making big pull requests slows down projects in multiple ways.
+
         1. Blocks others from working on these parts of the codebase
         2. Increases friction in the team, since more coordination is necessary
-        3. Lowers teams agility and makes it more difficult to tackle incoming challenges
+        3. Lowers team agility and makes it more difficult to tackle incoming challenges
 
         These, and many more, are reasons why you should keep your PR's smol!
         `,

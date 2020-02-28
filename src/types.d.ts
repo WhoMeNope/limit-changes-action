@@ -2,6 +2,6 @@ export interface PullRequestInfo {
   owner: string
   repo: string
   number: number
-  head_sha: string
+  sha: string
   ref: string
 }
