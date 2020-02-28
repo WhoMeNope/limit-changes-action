@@ -3535,7 +3535,7 @@ function run() {
                 pull_number: pr.number
             });
             const changes = pullRequest.additions + pullRequest.deletions;
-            const check = checkrun_1.default(octokit.checks, 'Changes', {
+            const check = checkrun_1.default(octokit.checks, 'changes', {
                 owner: pr.owner,
                 repo: pr.repo,
                 head_sha: pullRequest.head.sha

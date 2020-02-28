@@ -30,7 +30,7 @@ async function run(): Promise<void> {
 
     const changes = pullRequest.additions + pullRequest.deletions
 
-    const check = checkrun(octokit.checks, 'Changes', {
+    const check = checkrun(octokit.checks, 'changes', {
       owner: pr.owner,
       repo: pr.repo,
       head_sha: pullRequest.head.sha
