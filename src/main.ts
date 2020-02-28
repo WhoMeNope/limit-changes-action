@@ -1,15 +1,9 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 
-import * as status from './status'
+import * as types from './types.d'
 
-interface PullRequestInfo {
-  owner: string
-  repo: string
-  number: number
-  sha: string
-  ref: string
-}
+import checkrun from './checkrun'
 
 async function run(): Promise<void> {
   try {
@@ -28,7 +22,7 @@ async function run(): Promise<void> {
       return
     }
 
-    const statuscheck = status(octokit.checks, pr)
+    const check = checkrun(octokit.checks, 'Changes', pr)
 
     const {data: pullRequest} = await octokit.pulls.get({
       owner: pr.owner,
@@ -39,18 +33,18 @@ async function run(): Promise<void> {
     const changes = pullRequest.additions + pullRequest.deletions
 
     if (changes > errorLimit) {
-      await statuscheck.error()
+      await check.error()
     } else if (changes > warningLimit) {
-      await statuscheck.warning()
+      await check.warning()
     } else {
-      await statuscheck.success()
+      await check.success()
     }
   } catch (error) {
     core.setFailed(error.message)
   }
 }
 
-function getPullRequestInfo(): PullRequestInfo | undefined {
+function getPullRequestInfo(): types.PullRequestInfo | undefined {
   const {owner, repo, number} = github.context.issue
 
   const pullRequest = github.context.payload.pull_request
@@ -64,7 +58,7 @@ function getPullRequestInfo(): PullRequestInfo | undefined {
     owner,
     repo,
     number,
-    sha,
+    head_sha: sha,
     ref
   }
 }

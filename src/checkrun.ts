@@ -1,16 +1,42 @@
-const status = (checks, statusInfo): object => {
-  const started_at = new Date()
+import * as octokit from '@octokit/rest'
+
+import * as types from './types.d'
+
+interface Checks {
+  create: {
+    (
+      params?:
+      octokit.Octokit.RequestOptions & octokit.Octokit.ChecksCreateParams
+    ): Promise<octokit.Octokit.Response<octokit.Octokit.ChecksCreateResponse>>
+
+    endpoint: octokit.Octokit.Endpoint
+  }
+}
+
+export interface Checkrun {
+  error(): Promise<void>
+  warning(): Promise<void>
+  success(): Promise<void>
+}
+
+function checkrun(
+  checks: Checks,
+  name: string,
+  statusInfo: types.PullRequestInfo
+): Checkrun {
+  const started_at = new Date().toString()
 
   async function error(): Promise<void> {
     await checks.create({
+      name,
       ...statusInfo,
       status: 'completed',
       started_at,
-      completed_at: new Date(),
+      completed_at: new Date().toString(),
       conclusion: 'action_required',
       details_url: 'https://trunkbaseddevelopment.com/',
       output: {
-        title: 'So many changes deserve multiple PR\'s',
+        title: "So many changes deserve multiple PR's",
         summary: `
         Did you know?
         Making huge pull requests slows down project in multiple ways.
@@ -31,14 +57,15 @@ const status = (checks, statusInfo): object => {
   }
 
   async function warning(): Promise<void> {
-    return checks.create({
+    await checks.create({
+      name,
       ...statusInfo,
       status: 'completed',
       started_at,
-      completed_at: new Date(),
+      completed_at: new Date().toString(),
       conclusion: 'neutral',
       output: {
-        title: 'This is gettin\' chunky',
+        title: "This is gettin' chunky",
         summary: `
         Consider refactoring this into multiple PR's.
         `
@@ -47,11 +74,12 @@ const status = (checks, statusInfo): object => {
   }
 
   async function success(): Promise<void> {
-    return checks.create({
+    await checks.create({
+      name,
       ...statusInfo,
       status: 'completed',
       started_at,
-      completed_at: new Date(),
+      completed_at: new Date().toString(),
       conclusion: 'success',
       output: {
         title: 'Perfectly fun-sized',
@@ -73,4 +101,4 @@ const status = (checks, statusInfo): object => {
   }
 }
 
-export default status
+export default checkrun
