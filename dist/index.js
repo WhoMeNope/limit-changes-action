@@ -8359,10 +8359,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 function checkrun(checks, name, statusInfo) {
-    const started_at = new Date().toString();
+    const started_at = new Date().toJSON();
     function error() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield checks.create(Object.assign(Object.assign({ name }, statusInfo), { status: 'completed', started_at, completed_at: new Date().toString(), conclusion: 'action_required', details_url: 'https://trunkbaseddevelopment.com/', output: {
+            yield checks.create(Object.assign(Object.assign({ name }, statusInfo), { status: 'completed', started_at, completed_at: new Date().toJSON(), conclusion: 'action_required', details_url: 'https://trunkbaseddevelopment.com/', output: {
                     title: "So many changes deserve multiple PR's",
                     summary: `
         Did you know?
@@ -8384,7 +8384,7 @@ function checkrun(checks, name, statusInfo) {
     }
     function warning() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield checks.create(Object.assign(Object.assign({ name }, statusInfo), { status: 'completed', started_at, completed_at: new Date().toString(), conclusion: 'neutral', output: {
+            yield checks.create(Object.assign(Object.assign({ name }, statusInfo), { status: 'completed', started_at, completed_at: new Date().toJSON(), conclusion: 'neutral', output: {
                     title: "This is gettin' chunky",
                     summary: `
         Consider refactoring this into multiple PR's.
@@ -8394,7 +8394,7 @@ function checkrun(checks, name, statusInfo) {
     }
     function success() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield checks.create(Object.assign(Object.assign({ name }, statusInfo), { status: 'completed', started_at, completed_at: new Date().toString(), conclusion: 'success', output: {
+            yield checks.create(Object.assign(Object.assign({ name }, statusInfo), { status: 'completed', started_at, completed_at: new Date().toJSON(), conclusion: 'success', output: {
                     title: 'Perfectly fun-sized',
                     summary: 'Line by line getting to the finish line.',
                     images: [

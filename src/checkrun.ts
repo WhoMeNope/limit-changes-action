@@ -24,7 +24,7 @@ function checkrun(
   name: string,
   statusInfo: types.PullRequestInfo
 ): Checkrun {
-  const started_at = new Date().toString()
+  const started_at = new Date().toJSON()
 
   async function error(): Promise<void> {
     await checks.create({
@@ -32,7 +32,7 @@ function checkrun(
       ...statusInfo,
       status: 'completed',
       started_at,
-      completed_at: new Date().toString(),
+      completed_at: new Date().toJSON(),
       conclusion: 'action_required',
       details_url: 'https://trunkbaseddevelopment.com/',
       output: {
@@ -62,7 +62,7 @@ function checkrun(
       ...statusInfo,
       status: 'completed',
       started_at,
-      completed_at: new Date().toString(),
+      completed_at: new Date().toJSON(),
       conclusion: 'neutral',
       output: {
         title: "This is gettin' chunky",
@@ -79,7 +79,7 @@ function checkrun(
       ...statusInfo,
       status: 'completed',
       started_at,
-      completed_at: new Date().toString(),
+      completed_at: new Date().toJSON(),
       conclusion: 'success',
       output: {
         title: 'Perfectly fun-sized',
