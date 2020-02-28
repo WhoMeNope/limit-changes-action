@@ -1,10 +1,23 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: limit-changes-action
+description: Limit number of changes in a PR
+author: WhoMeNope
+
+branding:
+  icon: 'align-left'
+  color: 'blue'
+
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  repo-token:
+    description: 'GITHUB_TOKEN used for interacting with the repo'
+    required: true
+
+  warning:
+    description: 'Number of line changes allowed in a PR before warning'
+    default: 500
+  error:
+    description: 'Number of line changes allowed in a PR before erroring'
+    default: 1000
+
 runs:
   using: 'node12'
   main: 'dist/index.js'
